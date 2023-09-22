@@ -3,11 +3,22 @@ import java.util.LinkedList;
 
 public class CheckOut {
 
+    String nameCheckOut;
     Employee emp;
     LinkedList<Customer> customersQueue = new LinkedList<>();
 
-    public CheckOut(Employee emp) {
+    public CheckOut(String nameCheckOut, Employee emp) {
+        this.nameCheckOut = nameCheckOut;
         this.emp = emp;
+    }
+
+    @Override
+    public String toString() {
+        return "CheckOut{" +
+                "nameCheckOut='" + nameCheckOut + '\'' +
+                ", emp=" + emp +
+                ", customersQueue=" + customersQueue +
+                '}';
     }
 
     public void stockControl(){
@@ -18,9 +29,7 @@ public class CheckOut {
         return total;
     }
 
-    public void createBill(){
 
-    }
 
 
 }

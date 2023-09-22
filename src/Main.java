@@ -1,27 +1,34 @@
 public class Main {
-    static Supermarket coviran = new Supermarket(24, 3);
+    static Supermarket coviran = new Supermarket(24, 3,2);
     static int initialCustomers = 10;
+    static int customerGoOutTime = 12;
 
     public static void main(String[] args) throws InterruptedException {
-        addCustomersToSupermarket(initialCustomers);
+        coviran.addCustomersToSupermarket(initialCustomers);
 
         int time = 0;
         int totalTime = coviran.time; // Assuming Supermarket has a getTime() method
 
         while (time <= totalTime) {
+            System.out.println("Time: "+ time);
+            coviran.addTimeCustomers();
+
 
             if (time % 2 == 0){
-                System.out.println("Test 2 seconds");
-                System.out.println(coviran);
-                for (int i = 0; i<amountClientsInside(); i++){
+                for (int i = 0; i< coviran.customers.size(); i++){
                     coviran.customers.get(i).takeItem();
                 }
             }
 
             if (time % 3 == 0){
                 Boolean full = Boolean.FALSE;
-                System.out.println("Test 3 seconds");
-                full = fullBasketCustomers();
+                for(int i = 0; i<coviran.customers.size();i++){
+                    if (coviran.fullBasketCustomer(coviran.customers.get(i))){
+                        coviran.addCustomersToCheckOut(coviran.customers.get(i),coviran.checkoutLessBusy());
+
+                    }
+                }
+
             }
 
             if (time % 4 == 0){
@@ -30,56 +37,36 @@ public class Main {
             }
 
             if (time % 5  == 0){
-                addTimeClient();
+                coviran.addTimeCustomers();
+                for(int i = 0; i<coviran.customers.size();i++){
+                    if (coviran.fullBasketCustomer(coviran.customers.get(i))){
+                        coviran.createBill(coviran.customers.get(i));
+                        coviran.removeCustomerFromSupermarketAndQueue(coviran.customers.get(i),coviran.checkoutMoreBussy());
+                    }
+                }
             }
 
-            Thread.sleep(1000);
+            if (time % customerGoOutTime == 0){
+                for (int i = 0; i<coviran.customers.size();i++){
+                    if (coviran.customers.get(i).time >= coviran.time ){
+                      checkOutProcess();
+                    }
+                }
+            }
+
+            Thread.sleep(100);
             time++;
         }
     }
 
-    public static void addCustomersToSupermarket(int amount){
-        for (int i=0; i!= amount;i++){
-            coviran.customers.add(Factory.newCustumer());
+
+    static public void checkOutProcess(){
+        for (int i = 0; i<coviran.customers.size();i++) {
+            coviran.addCustomersToCheckOut(coviran.customers.get(i), coviran.checkoutLessBusy());
+            coviran.createBill(coviran.customers.get(i));
+            coviran.removeCustomerFromSupermarketAndQueue(coviran.customers.get(i), coviran.checkoutLessBusy());
         }
     }
 
-    public static int checkoutLessBusy(){
-        int customersAmount = coviran.checkouts.get(0).customersQueue.size();
-        int lessbusy = 0;
-        for (int i = 1; i< coviran.checkouts.size();i++){
-            if (coviran.checkouts.get(i).customersQueue.size() < customersAmount){
-                lessbusy = i;
-            }
-        }
-        return lessbusy;
-    }
 
-    public static void addCustomersToCheckOut(Customer customer, int checkOutLessBusy){
-        coviran.checkouts.get(checkOutLessBusy).customersQueue.add(customer);
-    }
-
-    public static void removeCustomerFromSupermarketAndQueue(Customer customer, int checkOutNumber){
-        coviran.customers.remove(customer);
-        coviran.checkouts.get(checkOutNumber).customersQueue.removeFirst();
-    }
-
-    public static void addTimeClient(){
-        for (int i = 0 ; i<amountClientsInside(); i++){
-            coviran.customers.get(i).time++;
-        }
-    }
-
-    public static int amountClientsInside(){
-        int allCustomers = coviran.customers.size();
-        return allCustomers;
-    }
-
-    public static Boolean fullBasketCustomers(){
-        Boolean full = Boolean.FALSE;
-        for (int i = 0; i<amountClientsInside();i++){
-            full = coviran.customers.get(i).compleatedShopping(coviran.itemsLimit);
-        }
-        return full;
-    }
 }
