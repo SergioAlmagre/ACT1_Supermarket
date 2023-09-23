@@ -1,4 +1,4 @@
-public class Person {
+public abstract class Person {
 
     int rol;
     String name;
@@ -18,5 +18,8 @@ public class Person {
     }
 
 
+    public abstract void greet ();
+
 
 }
+

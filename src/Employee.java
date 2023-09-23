@@ -13,5 +13,13 @@ public class Employee extends Person {
         this.shift = shift;
     }
 
+    @Override
+    public String toString() {
+        return "Name employee: " + name;
+    }
 
+    @Override
+    public void greet() {
+        System.out.println("Hello! I'm an employee and my name is " + this.name);
+    }
 }

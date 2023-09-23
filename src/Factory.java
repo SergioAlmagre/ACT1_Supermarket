@@ -49,7 +49,7 @@ public class Factory {
 
     public static CheckOut newCheckout(){
         // De esta forma el id aunque es un campo numérico se transforma en string
-        String name = "CheckOut" + id;
+        String name = "CheckOut" + id + " ";
         id++;
         CheckOut chkOut = new CheckOut(name,newEmployee());
         return chkOut;

@@ -14,11 +14,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "ItemID='" + ItemID + '\'' +
-                ", nameItem='" + nameItem + '\'' +
-                ", price=" + price +
-                '}';
+        return "ItemID: " + ItemID + " NameItem: " + nameItem +  " Price: " + price + '\n';
     }
 }
 

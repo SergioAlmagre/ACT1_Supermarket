@@ -1,72 +1,143 @@
+import java.util.Scanner;
+
 public class Main {
-    static Supermarket coviran = new Supermarket(24, 3,2);
-    static int initialCustomers = 10;
-    static int customerGoOutTime = 12;
+    static Supermarket supermarketName;
+    static int initialCustomers;
+    static int customerGoOutTime;
+    static boolean isOpen = false;
 
     public static void main(String[] args) throws InterruptedException {
-        coviran.addCustomersToSupermarket(initialCustomers);
+        boolean exit = false;
+        CommonData.createDataStructure();
+        int[] supermarketOptions = supermarketBuildingOptions();
+        supermarketName = new Supermarket(supermarketOptions[0],supermarketOptions[1],supermarketOptions[2]);
+        initialCustomers = supermarketOptions[3];
+        customerGoOutTime = supermarketOptions[4];
+        supermarketName.addCustomersToSupermarket(initialCustomers);
 
-        int time = 0;
-        int totalTime = coviran.time; // Assuming Supermarket has a getTime() method
+        do {
+            switch (supermarketName.GeneralMenu()){
+                case 1:{
+                    int time = 0;
 
-        while (time <= totalTime) {
-            System.out.println("Time: "+ time);
-            coviran.addTimeCustomers();
+                    while (time <= supermarketName.time) {
+    //            System.out.println("Time: "+ time);
+                        supermarketName.addTimeCustomers();
 
+                        if (time % 2 == 0) {
+                            for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                supermarketName.customers.get(i).takeItem();
+                            }
+                        }
 
-            if (time % 2 == 0){
-                for (int i = 0; i< coviran.customers.size(); i++){
-                    coviran.customers.get(i).takeItem();
-                }
-            }
+                        if (time % 3 == 0) {
+                            for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                if (supermarketName.fullBasketCustomer(supermarketName.customers.get(i))) {
+                                    supermarketName.addCustomersToCheckOut(supermarketName.customers.get(i), supermarketName.checkoutLessBusy());
+                                }
+                            }
+                        }
 
-            if (time % 3 == 0){
-                Boolean full = Boolean.FALSE;
-                for(int i = 0; i<coviran.customers.size();i++){
-                    if (coviran.fullBasketCustomer(coviran.customers.get(i))){
-                        coviran.addCustomersToCheckOut(coviran.customers.get(i),coviran.checkoutLessBusy());
+                        if (time % 4 == 0) {
+                            supermarketName.newRandomClient();
+                            System.out.println("New client entering");
+                        }
 
+                        if (time % 5 == 0) {
+                            supermarketName.addTimeCustomers();
+                            for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                if (supermarketName.fullBasketCustomer(supermarketName.customers.get(i))) {
+                                    supermarketName.checkouts.get(supermarketName.checkoutMoreBussy()).createBill(supermarketName.customers.get(i));
+                                    supermarketName.removeCustomerFromSupermarketAndQueue(supermarketName.customers.get(i), supermarketName.checkoutMoreBussy());
+                                }
+                            }
+                        }
+
+                        if (time % customerGoOutTime == 0) {
+                            for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                if (supermarketName.customers.get(i).time >= supermarketName.time) {
+                                    checkOutProcess();
+                                }
+                            }
+                        }
+
+                        Thread.sleep(100);
+                        time++;
                     }
+                    break;
                 }
+                case 2:{
 
-            }
-
-            if (time % 4 == 0){
-                coviran.newRandomClient();
-                System.out.println("New client entering");
-            }
-
-            if (time % 5  == 0){
-                coviran.addTimeCustomers();
-                for(int i = 0; i<coviran.customers.size();i++){
-                    if (coviran.fullBasketCustomer(coviran.customers.get(i))){
-                        coviran.createBill(coviran.customers.get(i));
-                        coviran.removeCustomerFromSupermarketAndQueue(coviran.customers.get(i),coviran.checkoutMoreBussy());
-                    }
+                    break;
                 }
-            }
+                case 3:{
 
-            if (time % customerGoOutTime == 0){
-                for (int i = 0; i<coviran.customers.size();i++){
-                    if (coviran.customers.get(i).time >= coviran.time ){
-                      checkOutProcess();
-                    }
+                    break;
+                }
+                case 4:{
+
+                    break;
+                }
+                case 5:{
+
+                    break;
+                }
+                case 6:{
+                    exit = true;
+                    break;
                 }
             }
+        }while (!exit);
 
-            Thread.sleep(100);
-            time++;
-        }
+
+
     }
-
 
     static public void checkOutProcess(){
-        for (int i = 0; i<coviran.customers.size();i++) {
-            coviran.addCustomersToCheckOut(coviran.customers.get(i), coviran.checkoutLessBusy());
-            coviran.createBill(coviran.customers.get(i));
-            coviran.removeCustomerFromSupermarketAndQueue(coviran.customers.get(i), coviran.checkoutLessBusy());
+        for (int i = 0; i< supermarketName.customers.size(); i++) {
+            supermarketName.addCustomersToCheckOut(supermarketName.customers.get(i), supermarketName.checkoutLessBusy());
+            supermarketName.checkouts.get(supermarketName.checkoutMoreBussy()).createBill(supermarketName.customers.get(i));
+            supermarketName.removeCustomerFromSupermarketAndQueue(supermarketName.customers.get(i), supermarketName.checkoutLessBusy());
         }
     }
+
+    /**
+     *
+     * @return
+     * 0 - time
+     * 1 - ItemsLimit
+     * 2 - Numbers Checkouts open
+     * 3 - Initial customers
+     * 4 - Customers go outside
+     */
+    static public int[] supermarketBuildingOptions(){
+        boolean correct = false;
+        int[] options = new int[5];
+        Scanner scanner = new Scanner(System.in);
+        do {
+            try{
+                System.out.println("Put the numbers of hours the supermarket will be open");
+                options[0] = scanner.nextInt();
+                System.out.println("Put the numbers of items limit to buy by the customers");
+                options[1] = scanner.nextInt();
+                System.out.println("Put the numbers of checkouts will be open");
+                options[2] = scanner.nextInt();
+                System.out.println("Put the numbers of initial customers inside the Supermarkert");
+                options[3] = scanner.nextInt();
+                System.out.println("Put the numbers of hours limit that a customer can be inside");
+                options[4] = scanner.nextInt();
+                System.out.println("All data registered successfully");
+                correct = true;
+            }catch (Exception ex){
+                System.out.println(ex.getMessage());
+                System.out.println("Some data is wrong, please put the info again");
+                scanner.nextLine();
+            }
+        }while (!correct);
+        return options;
+    }
+
+
 
 
 }

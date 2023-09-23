@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -5,6 +6,8 @@ public class Customer extends Person {
     Boolean car;
     Boolean pay;
     ShoppingBasket shoppingBasket = new ShoppingBasket();
+    ArrayList<Bill> billRegister = new ArrayList<>();
+
 
     public Customer(int rol, String name, Boolean car, Boolean pay) {
         super(rol, name);
@@ -14,13 +17,12 @@ public class Customer extends Person {
 
     @Override
     public String toString() {
-        return "Customer:" +
-                "car=" + car +
-                ", pay=" + pay +
-                ", shoppingBasket=" + shoppingBasket +
-                ", rol=" + rol +
-                ", name='" + name + '\'' +
-                ", time inside=" + time;
+        return "Customer name: " + name + " Credit card: "+ pay + " Car in parking: " + car;
+    }
+
+    @Override
+    public void greet() {
+        System.out.println("Hello! I'm a customer and my name is " + this.name);
     }
 
     public void takeItem(){
@@ -29,14 +31,14 @@ public class Customer extends Person {
         Boolean repeat = itemRepeat(item);
 
         if (randomTakingItem == 1 && !repeat){
-            this.shoppingBasket.shoopinBasket.add(Factory.randomItem());
+            this.shoppingBasket.shoppinBasket.add(Factory.randomItem());
         }
     }
 
     private Boolean itemRepeat(Item item){
         Boolean repeat = Boolean.FALSE;
-        for (int i = 0; i < this.shoppingBasket.shoopinBasket.size(); i++){
-            if (item == this.shoppingBasket.shoopinBasket.get(i)){
+        for (int i = 0; i < this.shoppingBasket.shoppinBasket.size(); i++){
+            if (item == this.shoppingBasket.shoppinBasket.get(i)){
                 repeat = Boolean.TRUE;
             }
         }
@@ -45,7 +47,7 @@ public class Customer extends Person {
 
     public Boolean compleatedShopping(int maxAmount){
         Boolean completed = Boolean.FALSE;
-        int inBasket = this.shoppingBasket.shoopinBasket.size();
+        int inBasket = this.shoppingBasket.shoppinBasket.size();
         if (inBasket == maxAmount){
             completed = Boolean.TRUE;
         }

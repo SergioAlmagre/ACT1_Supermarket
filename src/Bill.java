@@ -1,10 +1,16 @@
+import java.io.*;
 public class Bill {
 
-    int billID;
+    static int billID = 0;
     Customer customer;
+    String details;
 
-    public Bill(int billID, Customer customer) {
-        this.billID = billID;
+    public Bill( Customer customer, String details) {
+        billID++;
         this.customer = customer;
+        this.details = details;
     }
+
+
+
 }

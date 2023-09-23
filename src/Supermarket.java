@@ -1,5 +1,8 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Supermarket {
     /**
@@ -27,6 +30,7 @@ public class Supermarket {
         this.numCheckouts = numCheckouts;
 
         newCheckOut();
+
     }
 
     @Override
@@ -50,7 +54,6 @@ public class Supermarket {
 
     public void addCustomersToCheckOut(Customer customer, int checkOutLessBusy){
             this.checkouts.get(checkOutLessBusy).customersQueue.add(customer);
-        System.out.println(this.checkouts.get(checkOutLessBusy));
     }
 
     public int checkoutLessBusy(){
@@ -106,21 +109,47 @@ public class Supermarket {
 
     public  Boolean fullBasketCustomer(Customer customer){
         Boolean full = Boolean.FALSE;
-            if (customer.shoppingBasket.shoopinBasket.size() == this.itemsLimit){
+            if (customer.shoppingBasket.shoppinBasket.size() == this.itemsLimit){
                 full = Boolean.TRUE;
             }
         return full;
     }
 
-    public void createBill(Customer customer){
-
-    }
 
     public void newCheckOut(){
         for (int i = 0; i < this.numCheckouts; i++){
             this.checkouts.add(Factory.newCheckout());
         }
     }
+
+
+    public int GeneralMenu(){
+        int selecction = -1;
+        Scanner scanner = new Scanner(System.in);
+        try{
+            while (selecction < 0 || selecction > 6){
+                System.out.println("--------After sale menu---------");
+                System.out.println("1 - Open Supermarket");
+                System.out.println("2 - See current stock");
+                System.out.println("3 - Replenish stock");
+                System.out.println("4 - See customers");
+                System.out.println("5 - See benefit");
+                System.out.println("6 - Close Supermarket");
+                selecction = scanner.nextInt();
+            }
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+            System.out.println("Some data is wrong, please put the info again");
+            scanner.nextLine();
+        }
+        return selecction;
+    }
+
+
+
+
+
+
 
 }
 

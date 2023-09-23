@@ -1,10 +1,16 @@
 import java.util.ArrayList;
 
 public class ShoppingBasket {
-    ArrayList<Item> shoopinBasket = new ArrayList<>();
+    ArrayList<Item> shoppinBasket = new ArrayList<>();
 
     @Override
     public String toString() {
-        return "ShoppingBasket content: " + shoopinBasket;
+        String details = "--------------SHOPPING BASKET---------------" + '\n';
+        for (int i = 0; i< shoppinBasket.size(); i++){
+            details = details + shoppinBasket.get(i);
+        }
+        return details;
     }
+
+
 }
