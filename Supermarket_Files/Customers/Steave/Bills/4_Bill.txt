@@ -1,0 +1,8 @@
+********************BILL***********************
+CheckOut2 Name employee: Employee2
+Customer name: Steave Credit card: true Car in parking: false
+--------------SHOPPING BASKET---------------
+ItemID: on1 NameItem: Sweet Onion Price: 4.5
+ItemID: wa1 NameItem: Natural Water Price: 1.6
+ItemID: br1 NameItem: Bread Price: 2.6
+TOTAL:_____________________________________ 8.7 €

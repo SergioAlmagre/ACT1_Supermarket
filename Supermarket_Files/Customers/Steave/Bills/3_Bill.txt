@@ -1,0 +1,6 @@
+********************BILL***********************
+CheckOut1 Name employee: Employee1
+Customer name: Steave Credit card: false Car in parking: false
+--------------SHOPPING BASKET---------------
+ItemID: on1 NameItem: Sweet Onion Price: 4.5
+TOTAL:_____________________________________ 4.5 €

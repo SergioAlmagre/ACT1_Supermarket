@@ -17,7 +17,6 @@ public class Supermarket {
     int itemsLimit;
     int numCheckouts;
 
-
 //    number of Employeee it's not important for this case: There are building from factory
 
     ArrayList<CheckOut> checkouts = new ArrayList<CheckOut>();

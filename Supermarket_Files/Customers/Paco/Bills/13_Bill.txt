@@ -1,0 +1,5 @@
+********************BILL***********************
+CheckOut1 Name employee: Employee1
+Customer name: Paco Credit card: true Car in parking: true
+--------------SHOPPING BASKET---------------
+TOTAL:_____________________________________ 0.0 €

@@ -4,93 +4,95 @@ public class Main {
     static Supermarket supermarketName;
     static int initialCustomers;
     static int customerGoOutTime;
-    static boolean isOpen = false;
 
     public static void main(String[] args) throws InterruptedException {
-        boolean exit = false;
-        CommonData.createDataStructure();
-        int[] supermarketOptions = supermarketBuildingOptions();
-        supermarketName = new Supermarket(supermarketOptions[0],supermarketOptions[1],supermarketOptions[2]);
-        initialCustomers = supermarketOptions[3];
-        customerGoOutTime = supermarketOptions[4];
-        supermarketName.addCustomersToSupermarket(initialCustomers);
+        try{
+            boolean exit = false;
+            CommonData.createDataStructure();
+            int[] supermarketOptions = supermarketBuildingOptions();
+            supermarketName = new Supermarket(supermarketOptions[0],supermarketOptions[1],supermarketOptions[2]);
+            initialCustomers = supermarketOptions[3];
+            customerGoOutTime = supermarketOptions[4];
+            supermarketName.addCustomersToSupermarket(initialCustomers);
 
-        do {
-            switch (supermarketName.GeneralMenu()){
-                case 1:{
-                    int time = 0;
+            do {
+                switch (supermarketName.GeneralMenu()){
+                    case 1:{
+                        int time = 0;
 
-                    while (time <= supermarketName.time) {
-    //            System.out.println("Time: "+ time);
-                        supermarketName.addTimeCustomers();
-
-                        if (time % 2 == 0) {
-                            for (int i = 0; i < supermarketName.customers.size(); i++) {
-                                supermarketName.customers.get(i).takeItem();
-                            }
-                        }
-
-                        if (time % 3 == 0) {
-                            for (int i = 0; i < supermarketName.customers.size(); i++) {
-                                if (supermarketName.fullBasketCustomer(supermarketName.customers.get(i))) {
-                                    supermarketName.addCustomersToCheckOut(supermarketName.customers.get(i), supermarketName.checkoutLessBusy());
-                                }
-                            }
-                        }
-
-                        if (time % 4 == 0) {
-                            supermarketName.newRandomClient();
-                            System.out.println("New client entering");
-                        }
-
-                        if (time % 5 == 0) {
+                        while (time <= supermarketName.time) {
+        //            System.out.println("Time: "+ time);
                             supermarketName.addTimeCustomers();
-                            for (int i = 0; i < supermarketName.customers.size(); i++) {
-                                if (supermarketName.fullBasketCustomer(supermarketName.customers.get(i))) {
-                                    supermarketName.checkouts.get(supermarketName.checkoutMoreBussy()).createBill(supermarketName.customers.get(i));
-                                    supermarketName.removeCustomerFromSupermarketAndQueue(supermarketName.customers.get(i), supermarketName.checkoutMoreBussy());
+
+                            if (time % 2 == 0) {
+                                for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                    if (supermarketName.customers.get(i).shoppingBasket.shoppinBasket.size() < supermarketName.itemsLimit){
+                                        supermarketName.customers.get(i).takeItem();
+                                    }
                                 }
                             }
-                        }
 
-                        if (time % customerGoOutTime == 0) {
-                            for (int i = 0; i < supermarketName.customers.size(); i++) {
-                                if (supermarketName.customers.get(i).time >= supermarketName.time) {
-                                    checkOutProcess();
+                            if (time % 3 == 0) {
+                                for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                    if (supermarketName.fullBasketCustomer(supermarketName.customers.get(i))) {
+                                        supermarketName.addCustomersToCheckOut(supermarketName.customers.get(i), supermarketName.checkoutLessBusy());
+                                    }
                                 }
                             }
-                        }
 
-                        Thread.sleep(100);
-                        time++;
+                            if (time % 4 == 0) {
+                                supermarketName.newRandomClient();
+                                System.out.println("New client entering");
+                            }
+
+                            if (time % 5 == 0) {
+                                supermarketName.addTimeCustomers();
+                                for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                    if (supermarketName.fullBasketCustomer(supermarketName.customers.get(i))) {
+                                        supermarketName.checkouts.get(supermarketName.checkoutMoreBussy()).createBill(supermarketName.customers.get(i));
+                                        supermarketName.removeCustomerFromSupermarketAndQueue(supermarketName.customers.get(i), supermarketName.checkoutMoreBussy());
+                                    }
+                                }
+                            }
+
+                            if (time % customerGoOutTime == 0) {
+                                for (int i = 0; i < supermarketName.customers.size(); i++) {
+                                    if (supermarketName.customers.get(i).time >= supermarketName.time) {
+                                        checkOutProcess();
+                                    }
+                                }
+                            }
+
+                            Thread.sleep(100);
+                            time++;
+                        }
+                        break;
                     }
-                    break;
+                    case 2:{
+
+                        break;
+                    }
+                    case 3:{
+
+                        break;
+                    }
+                    case 4:{
+
+                        break;
+                    }
+                    case 5:{
+
+                        break;
+                    }
+                    case 6:{
+                        exit = true;
+                        break;
+                    }
                 }
-                case 2:{
-
-                    break;
-                }
-                case 3:{
-
-                    break;
-                }
-                case 4:{
-
-                    break;
-                }
-                case 5:{
-
-                    break;
-                }
-                case 6:{
-                    exit = true;
-                    break;
-                }
-            }
-        }while (!exit);
-
-
-
+            }while (!exit);
+        }catch (Exception e){
+            CommonData.logBook(e,"Main");
+        }
     }
 
     static public void checkOutProcess(){
@@ -129,7 +131,7 @@ public class Main {
                 System.out.println("All data registered successfully");
                 correct = true;
             }catch (Exception ex){
-                System.out.println(ex.getMessage());
+                CommonData.logBook(ex,"supermarketBuildingOptions");
                 System.out.println("Some data is wrong, please put the info again");
                 scanner.nextLine();
             }

@@ -1,0 +1,8 @@
+********************BILL***********************
+CheckOut2 Name employee: Employee2
+Customer name: Antonio Credit card: true Car in parking: true
+--------------SHOPPING BASKET---------------
+ItemID: br1 NameItem: Bread Price: 2.6
+ItemID: on1 NameItem: Sweet Onion Price: 4.5
+ItemID: on1 NameItem: Sweet Onion Price: 4.5
+TOTAL:_____________________________________ 11.6 €
